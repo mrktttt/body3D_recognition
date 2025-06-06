@@ -1,7 +1,11 @@
 import cv2
 import mediapipe as mp
 import time
+import json
+# Importation des fonctions locales
 import positionFunctions as pf # Importation de la fonction locale. (positionFunctions.py)
+from cameraCalibration import calibrate_camera # Importation de la fonction de calibration de la caméra.
+
 
 # Sélection des os à afficher
 # Indices des landmarks MediaPipe à afficher
@@ -50,6 +54,12 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)  # Définir la hauteur
 # Variable utilisée pour le calcul des FPS
 pTime = 0
 
+# Calibration de la caméra 
+camera_matrix, dist_coeffs = calibrate_camera()
+
+# Liste pour stocker les données d'animations
+animation_data = []
+frame_count = 0
 
 with pose:
     while cap.isOpened():
@@ -82,13 +92,24 @@ with pose:
             pf.draw_selected_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS, selected_landmarks)
 
             # Extraction des coordonnées utilisables
-            body_coordinates = pf.extract_body_coordinates(results.pose_landmarks, image.shape)
+            body_coordinates_3d = pf.extract_body_coordinates_3d(
+                results.pose_landmarks, 
+                image.shape, 
+                camera_matrix, 
+                dist_coeffs
+            )
+
+            # Export au format blender
+            blender_frame_data = pf.export_to_blender_format(body_coordinates_3d, frame_count)
+            animation_data.append(blender_frame_data)
+
+            frame_count += 1
 
             # Vérifier la visibilité des points clés
             visible_points = 0
-            total_points = len(body_coordinates)
+            total_points = len(body_coordinates_3d)
             
-            for point_name, point_data in body_coordinates.items():
+            for point_name, point_data in body_coordinates_3d.items():
                 # MediaPipe considère un point comme "visible" si sa visibilité est > 0.5
                 if point_data["visibility"] > 0.5:
                     visible_points += 1
@@ -116,6 +137,12 @@ with pose:
         # Quitter la boucle si 'q' est pressé
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+
+# Sauvegarder les données d'animation
+with open('animation_data.json', 'w') as f:
+    json.dump(animation_data, f, indent=2)
+
+print(f"Animation sauvegardée avec {len(animation_data)} frames")
 
 #Stop l'utilisation de la webcam et ferme les fenêtres
 cap.release()

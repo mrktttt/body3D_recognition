@@ -1,3 +1,5 @@
 #ignorer les fichiers de cache.
 /__pycache__/
 
+#ignorer les fichiers d'animation .json
+/*.json
