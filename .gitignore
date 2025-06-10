@@ -3,3 +3,9 @@
 
 #ignorer les fichiers d'animation .json
 /*.json
+
+#ignorer les fichiers de calibration photo
+/calibration_images/
+
+#ignorer le fichier de calibration
+/camera_calibration.pkl

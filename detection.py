@@ -4,7 +4,7 @@ import time
 import json
 # Importation des fonctions locales
 import positionFunctions as pf # Importation de la fonction locale. (positionFunctions.py)
-from cameraCalibration import calibrate_camera # Importation de la fonction de calibration de la caméra.
+import cameraCalibration as cc # Importation de la fonction de calibration de la caméra.
 
 
 # Sélection des os à afficher
@@ -55,7 +55,7 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)  # Définir la hauteur
 pTime = 0
 
 # Calibration de la caméra 
-camera_matrix, dist_coeffs = calibrate_camera()
+camera_matrix, dist_coeffs = cc.calibrate_camera()
 
 # Liste pour stocker les données d'animations
 animation_data = []
@@ -91,7 +91,7 @@ with pose:
             # Pour dessiner notre sélection d'os
             pf.draw_selected_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS, selected_landmarks)
 
-            # Extraction des coordonnées utilisables
+            # Extraction des coordonnées utilisables.
             body_coordinates_3d = pf.extract_body_coordinates_3d(
                 results.pose_landmarks, 
                 image.shape, 
@@ -103,12 +103,14 @@ with pose:
             blender_frame_data = pf.export_to_blender_format(body_coordinates_3d, frame_count)
             animation_data.append(blender_frame_data)
 
+            # Incrémenter le compteur de frames.
             frame_count += 1
 
             # Vérifier la visibilité des points clés
             visible_points = 0
             total_points = len(body_coordinates_3d)
             
+            # Parcourir les points clés pour compter ceux qui sont visibles 
             for point_name, point_data in body_coordinates_3d.items():
                 # MediaPipe considère un point comme "visible" si sa visibilité est > 0.5
                 if point_data["visibility"] > 0.5:
