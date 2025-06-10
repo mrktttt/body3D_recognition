@@ -121,8 +121,7 @@ with pose:
             body_coordinates_3d = pf.extract_body_coordinates_3d(
                 results.pose_landmarks, 
                 image.shape, 
-                camera_matrix, 
-                dist_coeffs
+                camera_matrix
             )
 
              # N'exporter les données que si l'enregistrement est actif

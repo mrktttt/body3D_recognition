@@ -34,16 +34,14 @@ def draw_selected_landmarks(image, landmarks, connections, selected_indices):
             cv2.line(image, start_point, end_point, (0, 255, 0), 2)
 
 
-def extract_body_coordinates_3d(landmarks, image_shape, camera_matrix, dist_coeffs, reference_depth=1.0):
+def extract_body_coordinates_3d(landmarks, image_shape, camera_matrix, reference_depth=1.0):
     """
     Extrait les coordonnées 3D des points clés du corps dans l'espace réel
     
     Args:
         landmarks: Les landmarks MediaPipe
         image_shape: Les dimensions de l'image (height, width, channels)
-        camera_matrix: Matrice intrinsèque de la caméra
-        dist_coeffs: Coefficients de distorsion
-        reference_depth: Profondeur de référence en mètres
+        camera_matrix: Matrice intrinsèque de la caméra        reference_depth: Profondeur de référence en mètres
     
     Returns:
         Un dictionnaire contenant les coordonnées 3D en mètres
@@ -89,14 +87,14 @@ def extract_body_coordinates_3d(landmarks, image_shape, camera_matrix, dist_coef
         cx, cy = camera_matrix[0, 2], camera_matrix[1, 2]
         
         # Coordonnées 3D en mètres
-        x_real = (x_px - cx) * depth_real / fx
-        y_real = (y_px - cy) * depth_real / fy
-        z_real = depth_real
+        x = (x_px - cx) * depth_real / fx
+        y = (y_px - cy) * depth_real / fy
+        z = depth_real
         
         body_points_3d[name] = {
-            "x": x_real,
-            "y": y_real, 
-            "z": z_real,
+            "x": x,
+            "y": y, 
+            "z": z,
             "visibility": landmark.visibility
         }
     
