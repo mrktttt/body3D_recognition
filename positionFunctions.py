@@ -105,7 +105,7 @@ def extract_body_coordinates_3d(landmarks, image_shape, camera_matrix, dist_coef
 
 def export_to_blender_format(body_coordinates_3d, frame_number):
     """
-    Exporte les coordonnées 3D au format compatible Blender
+    Exporte les coordonnées en 3 dimensions au format utilisable via Blender
     
     Args:
         body_coordinates_3d: Dictionnaire des coordonnées 3D

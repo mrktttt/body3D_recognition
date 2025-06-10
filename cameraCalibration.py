@@ -6,8 +6,14 @@ import os
 
 def calibrate_camera():
     """
-    Calibre la caméra pour obtenir les paramètres intrinsèques
-    Retourne la matrice de la caméra et les coefficients de distorsion
+    Calibre la caméra pour obtenir les paramètres optimaux.
+
+    Args:
+        None
+    
+    Returns:
+        camera_matrix: Matrice de la caméra
+        dist_coeffs: Coefficients de distorsion
     """
     
     # Vérifier si une calibration existe déjà
@@ -112,8 +118,15 @@ def calibrate_camera():
 
 def test_calibration():
     """
-    Test de la calibration avec une image en temps réel
+    Test de la calibration (Image non corrigée et image corrigée côte à côte).
+
+    Args:
+        None
+    
+    Returns:
+        None
     """
+
     camera_matrix, dist_coeffs = calibrate_camera()
     
     cap = cv2.VideoCapture(0)
@@ -136,7 +149,7 @@ def test_calibration():
         # Affichage côte à côte
         combined = np.hstack((frame, undistorted))
         cv2.putText(combined, "Original", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-        cv2.putText(combined, "Corrigé", (w + 10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.putText(combined, "Corrected", (w + 10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
         cv2.imshow('Test Calibration - Appuyez sur q pour quitter', combined)
         

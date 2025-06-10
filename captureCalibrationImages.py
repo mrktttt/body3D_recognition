@@ -3,11 +3,15 @@ import os
 
 def capture_calibration_images():
     """
-    Capture des images d'échiquier pour la calibration
+    Capture des images avec un échiquier pour la calibration de la caméra.    
+    Args:
+        bNone
+    Returns:
+        None
     """
     cap = cv2.VideoCapture(0)
     
-    # Créer le dossier pour les images de calibration
+    # Créer le dossier pour stocker les images de calibration
     if not os.path.exists('calibration_images'):
         os.makedirs('calibration_images')
     

@@ -3,8 +3,15 @@ import json
 
 def import_animation_data(filepath):
     """
-    Importe les données d'animation dans Blender
-    """
+    Importe les données d'animation depuis un fichier JSON et applique les transformations à l'armature sélectionnée dans Blender.
+
+    Args:
+        filepath (str): Chemin vers le fichier JSON contenant les données d'animation.
+    
+    Returns:
+        None
+    """ 
+
     with open(filepath, 'r') as f:
         animation_data = json.load(f)
     
