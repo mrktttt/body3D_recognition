@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 
 # Fonction pour dessiner seulement certains os
 def draw_selected_landmarks(image, landmarks, connections, selected_indices):

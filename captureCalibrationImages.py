@@ -5,7 +5,7 @@ def capture_calibration_images():
     """
     Capture des images avec un échiquier pour la calibration de la caméra.    
     Args:
-        bNone
+        None
     Returns:
         None
     """
