@@ -19,6 +19,7 @@ Pour pouvoir éxécuter le programme, veuillez être certains de l'installation 
 ```bash
 pip install opencv
 pip install mediapipe
+pip install vedo
 ```
 
 Vous pouvez ensuite copier le repo
