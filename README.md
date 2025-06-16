@@ -60,6 +60,12 @@ Finalement, vous pouvez commencer la détection avec le programme principal :
 python3 detection.py
 ```
 
+En appuyant sur **"r"** il est possible d'enregistrer un mouvement. Ensuite vous pourrez relire ce mouvement en utilisant le programme :
+
+```bash
+python3 animationTest.py
+```
+
 ## Auteurs
 
 - Mya Soudain
