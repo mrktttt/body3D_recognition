@@ -1,12 +1,20 @@
+# GITIGNORE FOR THE PROJECT
 #ignorer les fichiers de cache.
 /__pycache__/
 
+#-------------------------------------------
+# GITIGNORE FOR one_cam_setup FILE.
+#ignorer les fichiers de cache.
+/one_cam_setup/__pycache__/
+
 #ignorer les fichiers d'animation .json
-/*.json
+/one_cam_setup/*.json
 
 #ignorer les fichiers de calibration photo
-/calibration_images/
+/one_cam_setup/calibration_images/*.jpg
 
 #ignorer le fichier de calibration
-/camera_calibration.pkl
+/one_cam_setup/camera_calibration.pkl
 
+#-------------------------------------------
+#GITIGNORE FOR two_cam_setup FILE.
