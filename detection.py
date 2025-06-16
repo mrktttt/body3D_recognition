@@ -38,8 +38,7 @@ cv2.resizeWindow("Detection", 1280, 720)  # Redimensionnement de la fenêtre
 cv2.startWindowThread()
 
 # Initialisation de MediaPipe pour la détection de pose
-mp_drawing = mp.solutions.drawing_utils
-mp_pose = mp.solutions.pose
+mp_pose = mp.solutions.pose # Initialisation du modèle de pose
 pose = mp_pose.Pose()
 
 # Initialisation de la webcam
