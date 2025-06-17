@@ -12,9 +12,14 @@
 
 #ignorer les fichiers de calibration photo
 /one_cam_setup/calibration_images/*.jpg
+/one_cam_setup/calibration_images/
 
 #ignorer le fichier de calibration
 /one_cam_setup/camera_calibration.pkl
 
 #-------------------------------------------
 #GITIGNORE FOR two_cam_setup FILE.
+#ignorer les fichiers de cache.
+/two_cam_setup/__pycache__/
+/two_cam_setup/calib_c1/
+/two_cam_setup/calib_c2/
