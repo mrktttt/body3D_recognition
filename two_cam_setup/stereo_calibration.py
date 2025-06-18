@@ -5,7 +5,18 @@ import matplotlib.pyplot as plt
 
 # Based on : http://temugeb.github.io/opencv/python/2021/02/02/stereo-camera-calibration-and-triangulation.html
 
+
 def calibrate_camera(images_folder):
+    """
+    This function calibrates a camera using a set of chessboard images.
+
+    Parameters:
+    images_folder (str): Path to the folder containing chessboard images.
+    
+    Returns:
+    tuple: Camera matrix and distortion coefficients.
+
+    """
     images_names = glob.glob(images_folder)
     images = []
     for imname in images_names:
@@ -21,8 +32,9 @@ def calibrate_camera(images_folder):
     objp = np.zeros((rows * columns, 3), np.float32)
     objp[:,:2] = np.mgrid[0:rows, 0:columns].T.reshape(-1, 2)
     objp *= world_scaling
-
-    width = 720 #images[0].shape[1]
+    
+    #thoses are the dimensions of the images we will use
+    width = 720 #images[0].shape[1] 
     height = 720 #images[0].shape[0]
 
     imgpoints = []
@@ -50,6 +62,16 @@ def calibrate_camera(images_folder):
 
     return mtx, dist
         
+
+def calibrate_stereo (images_folder1, images_folder2):
+    """
+    This function calibrates a stereo camera system using two sets of chessboard images.
+
+    The cameras pictures needs to be taken at the same time. Therefore, make sure to be synchronised when taking the pictures.
+    parameters :   
+        images_folder1 (str): Path to the folder containing chessboard images for camera 1.
+        images_folder2 (str): Path to the folder containing chessboard images for camera 2. 
+    """
 
 
 if __name__ == '__main__':

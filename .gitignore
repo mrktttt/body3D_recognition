@@ -23,3 +23,6 @@
 /two_cam_setup/__pycache__/
 /two_cam_setup/calib_c1/
 /two_cam_setup/calib_c2/
+
+/two_cam_setup/c1/
+/two_cam_setup/c2/
