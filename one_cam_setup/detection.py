@@ -11,8 +11,7 @@ import cameraCalibration as cc # Importation de la fonction de calibration de la
 # Indices des landmarks MediaPipe à afficher
 # Ces indices correspondent aux points clés du corps que nous voulons visualiser.
 # Ils sont basés sur la documentation de MediaPipe Pose.
-# https://google.github.io/mediapipe/solutions/pose.html#pose-landmarks
-# https://google.github.io/mediapipe/images/mobile/pose_tracking_full_body_landmarks.png
+# https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker?hl=fr
 selected_landmarks = [
     # Visage
     0, 2, 5,

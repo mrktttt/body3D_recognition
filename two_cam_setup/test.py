@@ -2,6 +2,7 @@ import cv2 as cv
 import mediapipe as mp
 import numpy as np
 import sys
+from stereo_calibration import calibrate_camera
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
