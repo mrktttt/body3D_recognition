@@ -63,7 +63,7 @@ def calibrate_camera(images_folder):
     return mtx, dist
         
 
-def calibrate_stereo (images_folder1, images_folder2):
+def calibrate_stereo (mtx1, dist1, mtx2, dist2, images_folder1, images_folder2):
     """
     This function calibrates a stereo camera system using two sets of chessboard images.
 
@@ -79,12 +79,58 @@ def calibrate_stereo (images_folder1, images_folder2):
     c2_images = []
 
     for imname in img_names1:
-        img = cv.imread(imname, 1)
-        c1_images.append(img)
+        img1 = cv.imread(imname, 1)
+        c1_images.append(img1)
     for imname in img_names2:  
-        img = cv.imread(imname, 1)
-        c2_images.append(img)
+        img2 = cv.imread(imname, 1)
+        c2_images.append(img2)
+
+    criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 100, 0.0001)
+
+    rows = 4
+    columns = 7
+    world_scaling = 1
     
+    objp = np.zeros((rows * columns, 3), np.float32)
+    objp[:,:2] = np.mgrid[0:rows, 0:columns].T.reshape(-1, 2)
+    objp *= world_scaling
+
+    width = 720 #c1_images[0].shape[1]
+    height = 720 #c1_images[0].shape[0]
+
+    imgpoints_left = []
+    imgpoints_right = []
+
+    objpoints = []
+
+    for frame1, frame2 in zip(c1_images, c2_images):
+        gray1 = cv.cvtColor(frame1, cv.COLOR_BGR2GRAY)
+        gray2 = cv.cvtColor(frame2, cv.COLOR_BGR2GRAY)
+        ret1, corners1 = cv.findChessboardCorners(gray1, (rows, columns), None)
+        ret2, corners2 = cv.findChessboardCorners(gray2, (rows, columns), None)
+
+        if ret1 and ret2:
+            conv_size = (11, 11)
+            corners1 = cv.cornerSubPix(gray1, corners1, conv_size, (-1, -1), criteria)
+            corners2 = cv.cornerSubPix(gray2, corners2, conv_size, (-1, -1), criteria)
+    
+            cv.drawChessboardCorners(frame1, (rows, columns), corners1, ret1)
+            cv.imshow('img1', frame2)
+            cv.drawChessboardCorners(frame2, (rows, columns), corners2, ret2)
+            cv.imshow('img2', frame1)
+
+            k = cv.waitKey(0)
+
+            objpoints.append(objp)
+            imgpoints_left.append(corners1)
+            imgpoints_right.append(corners2)
+
+    stereocalibration_flags = cv.CALIB_FIX_INTRINSIC
+    ret, CM1, dist1, CM2, dist2, R, T, E, F = cv.stereoCalibrate(objpoints, imgpoints_left, imgpoints_right, mtx1, dist1, mtx2, dist2, (width, height), criteria=criteria, flags=stereocalibration_flags)
+    print(ret)
+    return R, T
+
+
 
 
 if __name__ == '__main__':
@@ -92,3 +138,8 @@ if __name__ == '__main__':
     mtx2, dist2 = calibrate_camera("calib_c2/*.jpg")
 
     print(mtx1, dist1, mtx2, dist2)
+
+    R, T = calibrate_stereo(mtx1, dist1, mtx2, dist2, "c1/*.jpg", "c2/*.jpg")
+
+    print("R:\n", R)
+    print("T:\n", T)
