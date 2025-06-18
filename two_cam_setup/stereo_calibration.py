@@ -72,6 +72,19 @@ def calibrate_stereo (images_folder1, images_folder2):
         images_folder1 (str): Path to the folder containing chessboard images for camera 1.
         images_folder2 (str): Path to the folder containing chessboard images for camera 2. 
     """
+    
+    img_names1 = glob.glob(images_folder1)
+    img_names2 = glob.glob(images_folder2)
+    c1_images = []
+    c2_images = []
+
+    for imname in img_names1:
+        img = cv.imread(imname, 1)
+        c1_images.append(img)
+    for imname in img_names2:  
+        img = cv.imread(imname, 1)
+        c2_images.append(img)
+    
 
 
 if __name__ == '__main__':
