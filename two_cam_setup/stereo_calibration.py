@@ -69,8 +69,15 @@ def calibrate_stereo (mtx1, dist1, mtx2, dist2, images_folder1, images_folder2):
 
     The cameras pictures needs to be taken at the same time. Therefore, make sure to be synchronised when taking the pictures.
     parameters :   
+        mtx1 : camera matrix for cam 1
+        dist1 : distortion coefficients for cam 1
+        mtx2 : camera matrix for cam 2
+        dist2 : distortion coefficients for cam 2
         images_folder1 (str): Path to the folder containing chessboard images for camera 1.
         images_folder2 (str): Path to the folder containing chessboard images for camera 2. 
+    returns :
+        R (np.ndarray): Rotation matrix between the two cameras.
+        T (np.ndarray): Translation vector between the two cameras.
     """
     
     img_names1 = glob.glob(images_folder1)
@@ -115,11 +122,10 @@ def calibrate_stereo (mtx1, dist1, mtx2, dist2, images_folder1, images_folder2):
             corners2 = cv.cornerSubPix(gray2, corners2, conv_size, (-1, -1), criteria)
     
             cv.drawChessboardCorners(frame1, (rows, columns), corners1, ret1)
-            cv.imshow('img1', frame2)
+            cv.imshow('img1', frame1)
             cv.drawChessboardCorners(frame2, (rows, columns), corners2, ret2)
-            cv.imshow('img2', frame1)
-
-            k = cv.waitKey(0)
+            cv.imshow('img2', frame2)
+            cv.waitKey(500)
 
             objpoints.append(objp)
             imgpoints_left.append(corners1)
