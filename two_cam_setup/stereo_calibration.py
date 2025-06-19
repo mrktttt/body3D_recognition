@@ -1,7 +1,6 @@
 import cv2 as cv 
 import glob
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Based on : http://temugeb.github.io/opencv/python/2021/02/02/stereo-camera-calibration-and-triangulation.html
 
@@ -122,9 +121,14 @@ def calibrate_stereo (mtx1, dist1, mtx2, dist2, images_folder1, images_folder2):
             corners2 = cv.cornerSubPix(gray2, corners2, conv_size, (-1, -1), criteria)
     
             cv.drawChessboardCorners(frame1, (rows, columns), corners1, ret1)
-            cv.imshow('img1', frame1)
             cv.drawChessboardCorners(frame2, (rows, columns), corners2, ret2)
-            cv.imshow('img2', frame2)
+            
+            # Ajouter des labels sur chaque frame
+            cv.putText(frame1, "Camera 0", (10, 30), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            cv.putText(frame2, "Camera 1", (10, 30), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            combined_frame = np.hstack((frame1, frame2))
+            cv.imshow('Calibration stereo', combined_frame)
+
             cv.waitKey(500)
 
             objpoints.append(objp)
