@@ -44,7 +44,7 @@ def capture_calibration_images(file_path, id_cam):
         key = cv.waitKey(1) & 0xFF
         
         if key == ord(' '):  # Espace pour capturer
-            img_name = f"{file_path}/img_{img_counter:02d}.jpg"
+            img_name = f"{file_path}/img_{img_counter:02d}.png"
             cv.imwrite(img_name, frame)
             print(f"Image sauvegardée: {img_name}")
             img_counter += 1

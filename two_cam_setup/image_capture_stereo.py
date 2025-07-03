@@ -86,8 +86,8 @@ def capture_image_stereo(file_path1, file_path2, id_cam1, id_cam2):
         # Si la touche espace est pressée, sauvegarder les images
         # If the space key is pressed, save the images
         if key == ord(' '):
-            img_name1 = f"{file_path1}/img_{img_counter:02d}.jpg"
-            img_name2 = f"{file_path2}/img_{img_counter:02d}.jpg"
+            img_name1 = f"{file_path1}/img_{img_counter:02d}.png"
+            img_name2 = f"{file_path2}/img_{img_counter:02d}.png"
             cv.imwrite(img_name1, frame1)
             cv.imwrite(img_name2, frame2)
             print(f"Images sauvegardées: {img_name1} et {img_name2}")
