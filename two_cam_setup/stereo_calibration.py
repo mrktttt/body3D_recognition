@@ -49,7 +49,7 @@ def calibrate_camera(images_folder):
             corners = cv.cornerSubPix(gray, corners, conv_size, (-1, -1), criteria)
             cv.drawChessboardCorners(img, (rows, columns), corners, ret)
             cv.imshow('img', img)
-            k = cv.waitKey(500)
+            k = cv.waitKey(50)
             objpoints.append(objp)
             imgpoints.append(corners)
 
@@ -129,7 +129,7 @@ def calibrate_stereo (mtx1, dist1, mtx2, dist2, images_folder1, images_folder2):
             combined_frame = np.hstack((frame1, frame2))
             cv.imshow('Calibration stereo', combined_frame)
 
-            cv.waitKey(500)
+            cv.waitKey(50)
 
             objpoints.append(objp)
             imgpoints_left.append(corners1)
@@ -141,15 +141,67 @@ def calibrate_stereo (mtx1, dist1, mtx2, dist2, images_folder1, images_folder2):
     return R, T
 
 
+def DLT (P1, P2, pt1, pt2):
+    """
+    This function implements the Direct Linear Transform (DLT) algorithm to compute the fundamental matrix.
 
+    Parameters:
+    P1 (np.ndarray): Camera matrix for camera 1.
+    P2 (np.ndarray): Camera matrix for camera 2.
+    pt1 (np.ndarray): Points in image 1.
+    pt2 (np.ndarray): Points in image 2.
+
+    Returns:
+    np.ndarray: Fundamental matrix.
+    """
+    A = [pt1[1]*P1[2,:] - P1[1,:],
+         P1[0,:] - pt1[0]*P1[2,:],
+         pt2[1]*P2[2,:] - P2[1,:],
+         P2[0,:] - pt2[0]*P2[2,:]]
+    print('A before reshape: ', A)
+    A = np.array(A).reshape((3,4))
+    print('A: ')
+    print(A)
+
+    B = A.transpose() @ A
+    from scipy import linalg 
+    U, s, Vh = linalg.svd(B, full_matrices = False)
+
+    print('Triangulated point: ')
+    print(Vh[3,0:3]/ Vh[3,3])
+    return Vh[3,0:3]/ Vh[3,3]
 
 if __name__ == '__main__':
-    mtx1, dist1 = calibrate_camera("calib_c1/*.jpg")
-    mtx2, dist2 = calibrate_camera("calib_c2/*.jpg")
+    mtx1, dist1 = calibrate_camera("c1/*.png")
+    mtx2, dist2 = calibrate_camera("c2/*.png")
 
     print(mtx1, dist1, mtx2, dist2)
 
-    R, T = calibrate_stereo(mtx1, dist1, mtx2, dist2, "c1/*.jpg", "c2/*.jpg")
+    R, T = calibrate_stereo(mtx1, dist1, mtx2, dist2, "c1/*.png", "c2/*.png")
 
+    R1, T1 = calibrate_stereo(mtx2, dist2, mtx1, dist1, "c2/*.png", "c1/*.png")
     print("R:\n", R)
     print("T:\n", T)
+    print("R1:\n", R1)
+    print("T1:\n", T1)
+
+    
+    # DU BON GROS HARDCODED POUR LA PASSION DE LA PASSION DU FUN.
+    uvs1 = [[458, 86], [451, 164], [287, 181],
+            [196, 383], [297, 444], [564, 194],
+            [562, 375], [596, 520], [329, 620],
+            [488, 622], [432, 52], [489, 56]]
+
+    uvs2 = [[540, 311], [603, 359], [542, 378],
+            [525, 507], [485, 542], [691, 352],
+            [752, 488], [711, 605], [549, 651],
+            [651, 663], [526, 293], [542, 290]]
+
+    points3D = []
+    for uv1, uv2 in zip(uvs1, uvs2):
+        print(uv1, uv2)
+        point3D = DLT(mtx1, mtx2, uv1, uv2)
+        points3D.append(point3D)
+    points3D = np.array(points3D)
+    print("3D Points:\n", points3D)
+
