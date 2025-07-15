@@ -4,7 +4,7 @@
 
 - Détecter les os d'un corps depuis une caméra. **Done**
 - Enregistrer ces mouvements. **Done**
-- Animer un rig dans blender avec ces mouvements. **To do**
+- Animer un rig dans blender avec ces mouvements. **Done**
 - Créer une IA pour corriger les mouvements d'arts martiaux. **To do**
 
 Nous sommes actuellement en train de travailler sur une solution à deux webcam pour une précision accrue des points enregistrés
